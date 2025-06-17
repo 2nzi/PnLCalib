@@ -1,19 +1,68 @@
-*.mp4
-.venv
-__pycache__
+# Exclure les environnements virtuels
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Python cache
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.pyw
-*.pyz
-*.mp4
-.venv
-__pycache__
 *.pyc
-*.pyo
-*.pyd
 *.pyw
 *.pyz
-*.git
-*.gitignore
-*.DS_Store
+
+# OS / IDE files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Logs & temp
+*.log
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# Données et résultats intermédiaires
+input/
+output/
+*.zip
+*.png
+*.jpg
+*.jpeg
+*.npy
+*.pkl
+*.h5
+*.pth
+*.pt
+
+# Fichiers spécifiques à ton projet
+data/private/
+UnderstandScripts/
+env_test/
+requirements_copy.txt
+requirements_clean.txt
+
+# Vercel & Docker fichiers
+.vercel/
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Vidéos
+*.mp4
+
+
+
+models/
