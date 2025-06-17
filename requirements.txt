@@ -37,8 +37,8 @@ shapely
 
 # PyTorch CPU uniquement (beaucoup plus léger)
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.1.0+cpu
-torchvision==0.16.0+cpu
+torch
+torchvision
 
 # Utilities
 tqdm
