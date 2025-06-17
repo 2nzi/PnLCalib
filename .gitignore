@@ -98,7 +98,7 @@ output/
 *.npy
 
 UnderstandScripts/
-
+inference/
 models/
 
 env_test/
@@ -106,3 +106,4 @@ env_test/
 requirements_copy.txt
 
 requirements_clean.txt
+
