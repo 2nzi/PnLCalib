@@ -18,6 +18,14 @@ Cette API est basée sur le travail de recherche original de **SoccerNet Camera 
 📖 **Paper** : SoccerNet Camera Calibration Challenge  
 👥 **Auteurs** : Équipe SoccerNet
 
+### 🎯 Principe de fonctionnement
+
+![Interface de calibration](https://github.com/2nzi/PnLCalib/blob/main/ressources/interface.png?raw=true)
+*Interface permettant de définir les lignes du terrain de football*
+
+![Transformation de calibration](https://github.com/2nzi/PnLCalib/blob/main/ressources/transformation.png?raw=true)  
+*Processus de transformation et de calibration de la caméra*
+
 ## Fonctionnalités
 
 ✅ Calibration automatique de caméras à partir d'images de terrain de football  
