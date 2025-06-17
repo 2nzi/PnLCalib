@@ -106,20 +106,6 @@ Une fois l'API lancée, accédez à la documentation interactive :
 - **Swagger UI** : http://localhost:8000/docs
 - **ReDoc** : http://localhost:8000/redoc
 
-## Déploiement
-
-### Vercel
-```bash
-# Connecter avec GitHub et déployer
-vercel --prod
-```
-
-### Docker
-```bash
-docker build -t pnlcalib-api .
-docker run -p 8000:8000 pnlcalib-api
-```
-
 ## Health Check
 
 ```bash
@@ -134,6 +120,7 @@ L'API accepte ces types de lignes de terrain :
 - `Circle right/left/central`
 - `Side line bottom/left`
 - `Middle line`
+...
 
 Chaque ligne est définie par une liste de points avec coordonnées `x` et `y`.
 
