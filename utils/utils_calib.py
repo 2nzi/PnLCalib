@@ -3,10 +3,10 @@ import cv2
 import copy
 import itertools
 import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
 
-from itertools import chain
+# from itertools import chain
 from scipy.optimize import least_squares
 
 # from utils_optimize import vector_to_mtx,  point_to_line_distance, get_opt_vector, line_plane_intersection, \
@@ -721,32 +721,32 @@ class FramebyFrameCalib:
             return None
 
 
-if __name__ == "__main__":
-    # Préparer les données pour l'affichage 2D
-    fig, ax = plt.subplots()
+# if __name__ == "__main__":
+#     # Préparer les données pour l'affichage 2D
+#     fig, ax = plt.subplots()
 
-    # Keypoints 2D
-    keypoint_world_coords_2D = [
-        [0., 0.], [52.5, 0.], [105., 0.], [0., 13.84], [16.5, 13.84], [88.5, 13.84], [105., 13.84],
-        [0., 24.84], [5.5, 24.84], [99.5, 24.84], [105., 24.84], [0., 30.34], [0., 30.34],
-        [105., 30.34], [105., 30.34], [0., 37.66], [0., 37.66], [105., 37.66], [105., 37.66],
-        [0., 43.16], [5.5, 43.16], [99.5, 43.16], [105., 43.16], [0., 54.16], [16.5, 54.16],
-        [88.5, 54.16], [105., 54.16], [0., 68.], [52.5, 68.], [105., 68.], [16.5, 26.68],
-        [52.5, 24.85], [88.5, 26.68], [16.5, 41.31], [52.5, 43.15], [88.5, 41.31],
-        [11., 34.], [16.5, 34.], [20.15, 34.],
-        [43.35, 34.], [52.5, 34.], [61.5, 34.], [84.85, 34.],
-        [88.5, 34.], [94., 34.]
-    ]
+#     # Keypoints 2D
+#     keypoint_world_coords_2D = [
+#         [0., 0.], [52.5, 0.], [105., 0.], [0., 13.84], [16.5, 13.84], [88.5, 13.84], [105., 13.84],
+#         [0., 24.84], [5.5, 24.84], [99.5, 24.84], [105., 24.84], [0., 30.34], [0., 30.34],
+#         [105., 30.34], [105., 30.34], [0., 37.66], [0., 37.66], [105., 37.66], [105., 37.66],
+#         [0., 43.16], [5.5, 43.16], [99.5, 43.16], [105., 43.16], [0., 54.16], [16.5, 54.16],
+#         [88.5, 54.16], [105., 54.16], [0., 68.], [52.5, 68.], [105., 68.], [16.5, 26.68],
+#         [52.5, 24.85], [88.5, 26.68], [16.5, 41.31], [52.5, 43.15], [88.5, 41.31],
+#         [11., 34.], [16.5, 34.], [20.15, 34.],
+#         [43.35, 34.], [52.5, 34.], [61.5, 34.], [84.85, 34.],
+#         [88.5, 34.], [94., 34.]
+#     ]
 
-    # Afficher les keypoints en 2D
-    for point in keypoint_world_coords_2D:
-        ax.scatter(point[0], point[1], color='green')
+#     # Afficher les keypoints en 2D
+#     for point in keypoint_world_coords_2D:
+#         ax.scatter(point[0], point[1], color='green')
 
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_title('Keypoints 2D Visualization')
-    ax.set_aspect('equal', adjustable='box')
-    plt.grid(True)
-    plt.show()
+#     ax.set_xlabel('X')
+#     ax.set_ylabel('Y')
+#     ax.set_title('Keypoints 2D Visualization')
+#     ax.set_aspect('equal', adjustable='box')
+#     plt.grid(True)
+#     plt.show()
 
 

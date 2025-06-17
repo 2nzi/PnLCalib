@@ -5,16 +5,13 @@ import copy
 import torch
 import itertools
 import numpy as np
-import matplotlib.pyplot as plt
 
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 from scipy.optimize import linear_sum_assignment
 from scipy.stats import linregress
 from ellipse import LsqEllipse
 from itertools import product
 from functools import reduce
 
-from utils.utils_field import _draw_field
 from utils.utils_heatmap import generate_gaussian_array_vectorized
 from utils.utils_geometry import line_intersection, ellipse_intersection, find_tangent_points, are_points_collinear
 
@@ -145,103 +142,6 @@ class KeypointsDB(object):
                                                             down_ratio=2, sigma=2, proj_err_th=self.proj_err_th)
         return heatmap_tensor, self.mask_array
 
-    def draw_keypoints(self, show_heatmap=False, scale=1):
-
-        if len(self.keypoints) == 0:
-            self.get_full_keypoints()
-
-        if show_heatmap:
-            heatmap_tensor = generate_gaussian_array_vectorized(self.num_channels, self.keypoints_final, self.size,
-                                                                down_ratio=2, sigma=2)
-            fig, (ax, ax2) = plt.subplots(1, 2, figsize=(scale*15, scale*7.5))
-
-            s = ax2.matshow(heatmap_tensor[-1])
-            divider = make_axes_locatable(ax2)
-            cax = divider.append_axes('right', size='5%', pad=0.05)
-            fig.colorbar(s, ax=ax2, cax=cax)
-
-        else:
-            fig, ax = plt.subplots(figsize=(scale*15, scale*7.5))
-
-        ax.imshow(self.image)
-
-        for kp in self.keypoints.keys():
-            if self.keypoints[kp]:
-                if self.keypoints[kp]['close_to_frame']:
-                    x, y = self.keypoints[kp]['x'], self.keypoints[kp]['y']
-                    ax.text(x, y, s=kp, zorder=11)
-                    ax.scatter(x, y, c='orange' if self.keypoints[kp]['retrieved'] else 'r', s=scale*10, zorder=10)
-
-        for kp in self.keypoints_aux.keys():
-            if self.keypoints_aux[kp]:
-                if self.keypoints_aux[kp]['close_to_frame']:
-                    x, y = self.keypoints_aux[kp]['x'], self.keypoints_aux[kp]['y']
-                    ax.text(x, y, s=f'{kp}', zorder=11)
-                    ax.scatter(x, y, c='yellow', s=scale*10, zorder=5)
-
-        for kp in self.keypoints1.keys():
-            if self.keypoints1[kp] and kp in list(range(31, 37)):
-                if self.keypoints1[kp]['close_to_frame']:
-                    x, y = self.keypoints1[kp]['x'], self.keypoints1[kp]['y']
-                    ax.text(x, y, s=kp, zorder=11)
-                    if 'proj_err' in self.keypoints1[kp].keys():
-                        if self.keypoints1[kp]['proj_err'] > 5.:
-                            ax.scatter(x, y, c='black', s=scale*10, zorder=10)
-                        else:
-                            ax.scatter(x, y, c='b', s=scale*10, zorder=10)
-                    else:
-                        ax.scatter(x, y, c='b', s=scale*10, zorder=10)
-
-        for kp in self.keypoints2.keys():
-            if self.keypoints2[kp] and kp in list(range(37, 45)):
-                if self.keypoints2[kp]['close_to_frame']:
-                    x, y = self.keypoints2[kp]['x'], self.keypoints2[kp]['y']
-                    ax.text(x, y, s=kp, zorder=11)
-                    if 'proj_err' in self.keypoints2[kp].keys():
-                        if self.keypoints2[kp]['proj_err'] > 5.:
-                            ax.scatter(x, y, c='black', s=scale*10, zorder=10)
-                        else:
-                            ax.scatter(x, y, c='pink', s=scale*10, zorder=10)
-                    else:
-                        ax.scatter(x, y, c='pink', s=scale*10, zorder=10)
-
-        for kp in self.keypoints3.keys():
-            if self.keypoints3[kp] and kp in list(range(45, 58)):
-                if self.keypoints3[kp]['close_to_frame']:
-                    x, y = self.keypoints3[kp]['x'], self.keypoints3[kp]['y']
-                    ax.text(x, y, s=kp, zorder=11)
-                    ax.scatter(x, y, c='green', s=scale*10, zorder=10)
-
-        plt.show()
-
-    def draw_field(self, fig_size=8):
-        def get_color(kp):
-            if kp < 30:
-                return 'red'
-            elif 30 <= kp < 36:
-                return 'blue'
-            elif 36 <= kp < 44:
-                return 'pink'
-            else:
-                return 'green'
-
-        f, ax = _draw_field(fig_size)
-
-        for count, kp in enumerate(self.keypoint_world_coords_2D):
-            x, y = kp[0], 68 - kp[1]
-            if count + 1 in [12, 16]:
-                x -= 2
-            elif count + 1 in [15, 19]:
-                x += 2
-            ax.text(x, y + .5, s=count + 1, zorder=11)
-            ax.scatter(x, y, c=get_color(count), s=10, zorder=10)
-
-        for count, kp in enumerate(self.keypoint_aux_world_coords_2D):
-            x, y = kp[0], 68 - kp[1]
-            ax.text(x, y + .5, s=f'{count + 1 + 57}', zorder=11)
-            ax.scatter(x, y, c='yellow', s=10, zorder=10)
-
-        plt.show()
 
     def upsample_ellipse(self):
         num_upsample_points = 5

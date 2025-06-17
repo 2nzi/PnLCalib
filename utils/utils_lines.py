@@ -2,10 +2,7 @@ import sys
 import math
 import itertools
 import numpy as np
-import matplotlib.pyplot as plt
 
-from scipy.optimize import linear_sum_assignment
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from utils.utils_geometry import line_intersection
 from utils.utils_heatmap import generate_gaussian_array_vectorized_l
@@ -108,35 +105,6 @@ class LineKeypointsDB(object):
         heatmap_tensor = generate_gaussian_array_vectorized_l(self.num_channels, self.lines, self.size, down_ratio=2,
                                                               sigma=2)
         return heatmap_tensor
-
-    def draw_keypoints(self, show_heatmap=True):
-
-        if len(self.lines) == 0:
-            self.get_lines()
-            self.refine_point_lines()
-
-        if show_heatmap:
-            heatmap = generate_gaussian_array_vectorized_l(self.num_channels, self.lines, self.size, down_ratio=2,
-                                                           sigma=2)
-            fig, (ax, ax2) = plt.subplots(1, 2, figsize=(15, 7.5))
-
-            s = ax2.matshow(heatmap.sum)
-            divider = make_axes_locatable(ax2)
-            cax = divider.append_axes('right', size='5%', pad=0.05)
-            fig.colorbar(s, ax=ax2, cax=cax)
-
-        else:
-            fig, ax = plt.subplots()
-
-        ax.imshow(self.image)
-
-        for kp in self.lines.keys():
-            for suf in ['_1', '_2']:
-                x, y = self.lines[kp]['x' + suf], self.lines[kp]['y' + suf]
-                ax.text(x, y, s=kp, zorder=11)
-                ax.scatter(x, y, c='red', s=10, zorder=10)
-
-        plt.show()
 
     def find_most_distanced_points(self, segment):
         # Generate all pairs of points in the segment
