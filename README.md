@@ -23,8 +23,6 @@ Cette API est basée sur le travail de recherche original de **SoccerNet Camera 
 ![Interface de calibration](https://github.com/2nzi/PnLCalib/blob/main/ressources/interface.png?raw=true)
 *Interface permettant de définir les lignes du terrain de football*
 
-![Transformation de calibration](https://github.com/2nzi/PnLCalib/blob/main/ressources/transformation.png?raw=true)  
-*Processus de transformation et de calibration de la caméra*
 
 ## Fonctionnalités
 
@@ -121,6 +119,9 @@ Cet exemple utilise l'image `resources/cam3.jpg` du projet avec toutes les ligne
 
 ![Image d'exemple cam3.jpg](https://github.com/2nzi/PnLCalib/blob/main/ressources/cam3.jpg?raw=true)
 *Image de terrain de football utilisée pour la calibration - cam3.jpg*
+
+![Transformation de calibration](https://github.com/2nzi/PnLCalib/blob/main/ressources/transformation.png?raw=true)  
+*Processus de transformation et de calibration de la caméra*
 
 #### Avec curl
 
