@@ -66,7 +66,7 @@ data/private/
 # Model files (si trop gros)
 *.pth
 *.pt
-models/large_models/
+
 
 # Environment variables
 .env.local
@@ -95,5 +95,8 @@ output/
 *.zip
 *.png
 *.jpg
+*.npy
 
 UnderstandScripts/
+
+models/
