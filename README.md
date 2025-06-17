@@ -111,6 +111,9 @@ curl -X POST "http://localhost:8000/calibrate" \
 
 Cet exemple utilise l'image `resources/cam3.jpg` du projet avec toutes les lignes détectées.
 
+![Image d'exemple cam3.jpg](https://github.com/2nzi/PnLCalib/blob/main/ressources/cam3.jpg?raw=true)
+*Image de terrain de football utilisée pour la calibration - cam3.jpg*
+
 #### Avec curl
 
 ```bash
