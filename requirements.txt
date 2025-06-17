@@ -20,6 +20,8 @@
 # # Utilities
 # tqdm==4.66.1
 
+
+
 # requirements_clean.txt
 fastapi
 uvicorn[standard]
@@ -36,9 +38,8 @@ lsq-ellipse
 shapely
 
 # PyTorch CPU uniquement (beaucoup plus léger)
---extra-index-url https://download.pytorch.org/whl/cpu
-torch+cpu
-torchvision+cpu
+torch
+torchvision
 
 # Utilities
 tqdm
