@@ -1,18 +1,18 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "api.py",
-        "use": "@vercel/python"
+  "version": 2,
+  "builds": [
+    {
+      "src": "api.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.10"
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "api.py"
-      }
-    ],
-    "env": {
-      "PYTHONPATH": "."
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api.py"
+    }
+  ]
+}
