@@ -7,7 +7,7 @@
 Cette API est basée sur le travail de recherche original de **SoccerNet Camera Calibration Challenge**. Elle transforme les algorithmes de calibration existants en une API REST accessible et facile à utiliser.
 
 ### Travail original
-📍 **Repository source** : [SoccerNet Camera Calibration](https://github.com/SoccerNet/sn-calibration)  
+📍 **Repository source** : [SoccerNet Camera Calibration](https://github.com/SoccerNet/sn-calibration)  [Marc Gutiérrez-Pérez](https://github.com/mguti97/PnLCalib)
 📖 **Paper** : SoccerNet Camera Calibration Challenge  
 👥 **Auteurs** : Équipe SoccerNet
 
@@ -126,7 +126,7 @@ Chaque ligne est définie par une liste de points avec coordonnées `x` et `y`.
 
 ## Crédits
 
-Basé sur le travail original de l'équipe SoccerNet pour le Camera Calibration Challenge [2nzi](https://github.com/mguti97/PnLCalib).  
+Basé sur le travail original de l'équipe SoccerNet pour le Camera Calibration Challenge [Marc Gutiérrez-Pérez](https://github.com/mguti97/PnLCalib).  
 Transformé en API REST par [2nzi](https://github.com/2nzi).
 
 ## Licence
