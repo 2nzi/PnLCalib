@@ -103,7 +103,5 @@ models/
 
 env_test/
 
-requirements_copy.txt
-
-requirements_clean.txt
+requirements_init.txt
 
