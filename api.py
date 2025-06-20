@@ -13,6 +13,7 @@ import torchvision.transforms as T
 import torchvision.transforms.functional as f
 import yaml
 from tqdm import tqdm
+from huggingface_hub import hf_hub_download
 
 from get_camera_params import get_camera_parameters
 
@@ -40,7 +41,8 @@ app.add_middleware(
 # Paramètres par défaut pour l'inférence
 WEIGHTS_KP = "models/SV_FT_TSWC_kp"
 WEIGHTS_LINE = "models/SV_FT_TSWC_lines"
-DEVICE = "cuda:0"
+# DEVICE = "cuda:0"
+DEVICE = "cpu"
 KP_THRESHOLD = 0.15
 LINE_THRESHOLD = 0.15
 PNL_REFINE = True
@@ -49,33 +51,76 @@ FRAME_STEP = 5
 # Cache pour les modèles (éviter de les recharger à chaque requête)
 _models_cache = None
 
+# Paramètres pour HF Hub
+HF_MODEL_REPO = "2nzi/SV_FT_TSWC_kp"  # Remplacez par votre repo
+WEIGHTS_KP_FILE = "SV_FT_TSWC_kp"  # Nom du fichier dans le repo
+WEIGHTS_LINE_FILE = "SV_FT_TSWC_lines"  # Nom du fichier dans le repo
+
 def load_inference_models():
-    """Charge les modèles d'inférence (avec cache)"""
+    """Charge les modèles d'inférence depuis Hugging Face Hub"""
     global _models_cache
     
     if _models_cache is not None:
         return _models_cache
     
-    device = torch.device(DEVICE if torch.cuda.is_available() else 'cpu')
-    
-    # Charger les configurations
-    cfg = yaml.safe_load(open("config/hrnetv2_w48.yaml", 'r'))
-    cfg_l = yaml.safe_load(open("config/hrnetv2_w48_l.yaml", 'r'))
-    
-    # Modèle keypoints
-    model = get_cls_net(cfg)
-    model.load_state_dict(torch.load(WEIGHTS_KP, map_location=device))
-    model.to(device)
-    model.eval()
-    
-    # Modèle lignes
-    model_l = get_cls_net_l(cfg_l)
-    model_l.load_state_dict(torch.load(WEIGHTS_LINE, map_location=device))
-    model_l.to(device)
-    model_l.eval()
-    
-    _models_cache = (model, model_l, device)
-    return _models_cache
+    try:
+        # Device detection
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        print(f"Using device: {device}")
+        
+        # Télécharger les modèles depuis HF Hub
+        print("Téléchargement des modèles depuis Hugging Face Hub...")
+        
+        weights_kp_path = hf_hub_download(
+            repo_id=HF_MODEL_REPO,
+            filename=WEIGHTS_KP_FILE,
+            cache_dir="./hf_cache"
+        )
+        
+        weights_line_path = hf_hub_download(
+            repo_id=HF_MODEL_REPO, 
+            filename=WEIGHTS_LINE_FILE,
+            cache_dir="./hf_cache"
+        )
+        
+        print(f"Modèles téléchargés:")
+        print(f"  - Keypoints: {weights_kp_path}")
+        print(f"  - Lines: {weights_line_path}")
+        
+        # Vérifier l'existence des fichiers de configuration
+        config_files = ["config/hrnetv2_w48.yaml", "config/hrnetv2_w48_l.yaml"]
+        for config_file in config_files:
+            if not os.path.exists(config_file):
+                raise FileNotFoundError(f"Fichier de configuration manquant: {config_file}")
+        
+        # Charger les configurations
+        with open("config/hrnetv2_w48.yaml", 'r') as f:
+            cfg = yaml.safe_load(f)
+        with open("config/hrnetv2_w48_l.yaml", 'r') as f:
+            cfg_l = yaml.safe_load(f)
+        
+        # Modèle keypoints
+        model = get_cls_net(cfg)
+        model.load_state_dict(torch.load(weights_kp_path, map_location=device))
+        model.to(device)
+        model.eval()
+        
+        # Modèle lignes
+        model_l = get_cls_net_l(cfg_l)
+        model_l.load_state_dict(torch.load(weights_line_path, map_location=device))
+        model_l.to(device)
+        model_l.eval()
+        
+        _models_cache = (model, model_l, device)
+        print("✅ Modèles chargés avec succès depuis HF Hub!")
+        return _models_cache
+        
+    except Exception as e:
+        print(f"❌ Erreur lors du chargement des modèles: {e}")
+        raise HTTPException(
+            status_code=503, 
+            detail=f"Modèles non disponibles: {str(e)}. Veuillez réessayer plus tard."
+        )
 
 def process_frame_inference(frame, model, model_l, device, frame_width, frame_height):
     """Traite une frame et retourne les paramètres de caméra"""
@@ -283,6 +328,7 @@ async def inference_image(
     Returns:
         Paramètres de calibration de la caméra extraits automatiquement
     """
+    params = None  # Initialiser params
     try:
         # Validation du format d'image - version robuste
         content_type = getattr(image, 'content_type', None) or ""
@@ -324,6 +370,7 @@ async def inference_image(
             
             # Traitement
             params = process_frame_inference(frame, model, model_l, device, frame_width, frame_height)
+            
             # Formatage de la réponse
             response = InferenceImageResponse(
                 status="success" if params is not None else "failed",
@@ -343,7 +390,7 @@ async def inference_image(
         except Exception as e:
             raise HTTPException(
                 status_code=500, 
-                detail=f"Erreur lors de l'inférence: {str(e)} \n params:\n{params}"
+                detail=f"Erreur lors de l'inférence: {str(e)}"
             )
         
         finally:
@@ -480,5 +527,4 @@ async def inference_video(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur interne: {str(e)}")
 
-# Point d'entrée pour Vercel
 app_instance = app
